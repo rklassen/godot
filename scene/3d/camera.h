@@ -41,10 +41,11 @@ class Camera : public Spatial {
 
 public:
 	enum Projection {
-
 		PROJECTION_PERSPECTIVE,
 		PROJECTION_ORTHOGONAL,
-		PROJECTION_FRUSTUM
+		PROJECTION_FRUSTUM,
+		// Lowlande
+		PROJECTION_CUSTOM
 	};
 
 	enum KeepAspect {
@@ -72,6 +73,7 @@ private:
 	float v_offset;
 	float h_offset;
 	KeepAspect keep_aspect;
+	float m00, m01, m11, m12;
 
 	RID camera;
 	RID scenario_id;
@@ -111,7 +113,10 @@ public:
 	void set_perspective(float p_fovy_degrees, float p_z_near, float p_z_far);
 	void set_orthogonal(float p_size, float p_z_near, float p_z_far);
 	void set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p_z_far);
+	// Lowlande
+	void set_custom(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33);
 	void set_projection(Camera::Projection p_mode);
+	
 
 	void make_current();
 	void clear_current(bool p_enable_next = true);

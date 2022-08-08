@@ -47,13 +47,18 @@ void Camera::_update_camera_mode() {
 	switch (mode) {
 		case PROJECTION_PERSPECTIVE: {
 			set_perspective(fov, near, far);
-
 		} break;
 		case PROJECTION_ORTHOGONAL: {
 			set_orthogonal(size, near, far);
 		} break;
 		case PROJECTION_FRUSTUM: {
 			set_frustum(size, frustum_offset, near, far);
+		} break;
+		case PROJECTION_CUSTOM: {
+			set_custom(1.0/18.0, 0.1, 0.0, 0.0,
+							0.0, 0.1, 0.5, 0.0,
+							0.0, 0.0, 0.0, 1.0,
+							0.0, 0.0, 0.0, 1.0 );
 		} break;
 	}
 }
@@ -71,7 +76,23 @@ void Camera::_validate_property(PropertyInfo &p_property) const {
 		if (mode != PROJECTION_FRUSTUM) {
 			p_property.usage = PROPERTY_USAGE_NOEDITOR;
 		}
-	}
+	} else if (p_property.name == "m00") {
+		if (mode != PROJECTION_CUSTOM) {
+			p_property.usage = PROPERTY_USAGE_NOEDITOR;
+		}
+	} else if (p_property.name == "m01") {
+		if (mode != PROJECTION_CUSTOM) {
+			p_property.usage = PROPERTY_USAGE_NOEDITOR;
+		}
+	} else if (p_property.name == "m11") {
+		if (mode != PROJECTION_CUSTOM) {
+			p_property.usage = PROPERTY_USAGE_NOEDITOR;
+		}
+	} else if (p_property.name == "m12") {
+		if (mode != PROJECTION_CUSTOM) {
+			p_property.usage = PROPERTY_USAGE_NOEDITOR;
+		}
+	} 
 }
 
 void Camera::_update_camera() {
@@ -208,6 +229,11 @@ void Camera::set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p
 	force_change = false;
 
 	VisualServer::get_singleton()->camera_set_frustum(camera, size, frustum_offset, near, far);
+	update_gizmo();
+}
+
+void Camera::set_custom() {
+	VisualServer::get_singleton()->camera_set_custom(camera);
 	update_gizmo();
 }
 

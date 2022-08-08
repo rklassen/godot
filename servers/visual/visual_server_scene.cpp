@@ -84,7 +84,9 @@ void VisualServerScene::camera_set_frustum(RID p_camera, float p_size, Vector2 p
 
 // Lowlande: setter for the camera to store values that will be used on a per-frame basis to calculate matrix values
 void VisualServerScene::camera_set_custom(RID p_camera) {
-	// TODO: establish parameters, implement this 
+	Camera *camera = camera_owner.get(p_camera);
+	ERR_FAIL_COND(!camera);
+	camera->type = Camera::CUSTOM;
 }
 
 
