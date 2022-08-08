@@ -240,16 +240,15 @@ void Camera::set_custom() {
 	update_gizmo();
 }
 
-void Camera::set_custom_row_x(Color p_row) { custom_row_x = p_row; }
-void Camera::set_custom_row_y(Color p_row) { custom_row_y = p_row; }
-void Camera::set_custom_row_z(Color p_row) { custom_row_z = p_row; }
-void Camera::set_custom_row_w(Color p_row) { custom_row_w = p_row; }
+void Camera::set_custom_row_x(Vector3 p_row) { custom_row_x = p_row; }
+void Camera::set_custom_row_y(Vector3 p_row) { custom_row_y = p_row; }
+void Camera::set_custom_row_z(Vector3 p_row) { custom_row_z = p_row; }
+void Camera::set_custom_row_w(Vector3 p_row) { custom_row_w = p_row; }
 
-Color Camera::get_custom_row_x() const { return custom_row_x; }
-Color Camera::get_custom_row_y() const { return custom_row_y; }
-Color Camera::get_custom_row_z() const { return custom_row_z; };
-Color Camera::get_custom_row_w() const { return custom_row_w; };
-
+Vector3 Camera::get_custom_row_x() const { return custom_row_x; }
+Vector3 Camera::get_custom_row_y() const { return custom_row_y; }
+Vector3 Camera::get_custom_row_z() const { return custom_row_z; }
+Vector3 Camera::get_custom_row_w() const { return custom_row_w; }
 
 
 void Camera::set_projection(Camera::Projection p_mode) {
@@ -515,11 +514,15 @@ void Camera::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_perspective", "fov", "z_near", "z_far"), &Camera::set_perspective);
 	ClassDB::bind_method(D_METHOD("set_orthogonal", "size", "z_near", "z_far"), &Camera::set_orthogonal);
 	ClassDB::bind_method(D_METHOD("set_frustum", "size", "offset", "z_near", "z_far"), &Camera::set_frustum);
+
 	ClassDB::bind_method(D_METHOD("set_custom_row_x", "custom_row_x"), &Camera::set_custom_row_x);
 	ClassDB::bind_method(D_METHOD("set_custom_row_y", "custom_row_y"), &Camera::set_custom_row_y);
 	ClassDB::bind_method(D_METHOD("set_custom_row_z", "custom_row_z"), &Camera::set_custom_row_z);
 	ClassDB::bind_method(D_METHOD("set_custom_row_w", "custom_row_w"), &Camera::set_custom_row_w);
-
+	ClassDB::bind_method(D_METHOD("get_custom_row_x"), &Camera::get_custom_row_x);
+	ClassDB::bind_method(D_METHOD("get_custom_row_y"), &Camera::get_custom_row_y);
+	ClassDB::bind_method(D_METHOD("get_custom_row_z"), &Camera::get_custom_row_z);
+	ClassDB::bind_method(D_METHOD("get_custom_row_w"), &Camera::get_custom_row_w);
 
 	ClassDB::bind_method(D_METHOD("make_current"), &Camera::make_current);
 	ClassDB::bind_method(D_METHOD("clear_current", "enable_next"), &Camera::clear_current, DEFVAL(true));
@@ -566,10 +569,10 @@ void Camera::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doppler_tracking", PROPERTY_HINT_ENUM, "Disabled,Idle,Physics"), "set_doppler_tracking", "get_doppler_tracking");
 	// Lowlande
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "projection", PROPERTY_HINT_ENUM, "Perspective,Orthogonal,Frustum,Custom"), "set_projection", "get_projection");
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "custom_row_x"), "set_custom_row_x", "get_custom_row_x");
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "custom_row_y"), "set_custom_row_y", "get_custom_row_y");
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "custom_row_z"), "set_custom_row_z", "get_custom_row_z");
-	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "custom_row_w"), "set_custom_row_w", "get_custom_row_w");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_x"), "set_custom_row_x", "get_custom_row_x");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_y"), "set_custom_row_y", "get_custom_row_y");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_z"), "set_custom_row_z", "get_custom_row_z");
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_w"), "set_custom_row_w", "get_custom_row_w");
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "current"), "set_current", "is_current");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "fov", PROPERTY_HINT_RANGE, "1,179,0.1"), "set_fov", "get_fov");

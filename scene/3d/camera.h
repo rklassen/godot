@@ -74,10 +74,10 @@ private:
 	float h_offset;
 	KeepAspect keep_aspect;
 	// Lowlande
-	Color custom_row_x;
-	Color custom_row_y;
-	Color custom_row_z;
-	Color custom_row_w;
+	Vector3 custom_row_x;
+	Vector3 custom_row_y;
+	Vector3 custom_row_z;
+	Vector3 custom_row_w;
 
 	RID camera;
 	RID scenario_id;
@@ -120,14 +120,14 @@ public:
 	// Lowlande
 	//void set_custom(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33);
 	void set_custom();
-	void set_custom_row_x(Color p_row);
-	void set_custom_row_y(Color p_row);
-	void set_custom_row_z(Color p_row);
-	void set_custom_row_w(Color p_row);
-	Color get_custom_row_x() const;
-	Color get_custom_row_y() const;
-	Color get_custom_row_w() const;
-	Color get_custom_row_z() const;
+	void set_custom_row_x(Vector3 p_row);
+	void set_custom_row_y(Vector3 p_row);
+	void set_custom_row_z(Vector3 p_row);
+	void set_custom_row_w(Vector3 p_row);
+	Vector3 get_custom_row_x() const;
+	Vector3 get_custom_row_y() const;
+	Vector3 get_custom_row_w() const;
+	Vector3 get_custom_row_z() const;
 	void set_projection(Camera::Projection p_mode);
 	
 
