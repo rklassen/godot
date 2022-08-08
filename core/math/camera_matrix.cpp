@@ -218,20 +218,20 @@ void CameraMatrix::set_custom(real_t m00, real_t m01, real_t m02, real_t m03, re
 	matrix[0][2] = m02;
 	matrix[0][3] = m03;
 
-	matrix[1][0] = m00;
-	matrix[1][1] = m01;
-	matrix[1][2] = m02;
-	matrix[1][3] = m03;
+	matrix[1][0] = m10;
+	matrix[1][1] = m11;
+	matrix[1][2] = m12;
+	matrix[1][3] = m13;
 
-	matrix[2][0] = m00;
-	matrix[2][1] = m01;
-	matrix[2][2] = m02;
-	matrix[2][3] = m03;
+	matrix[2][0] = m20;
+	matrix[2][1] = m21;
+	matrix[2][2] = m22;
+	matrix[2][3] = m23;
 
-	matrix[3][0] = m00;
-	matrix[3][1] = m01;
-	matrix[3][2] = m02;
-	matrix[3][3] = m03;
+	matrix[3][0] = m30;
+	matrix[3][1] = m31;
+	matrix[3][2] = m32;
+	matrix[3][3] = m33;
 
 }
 
