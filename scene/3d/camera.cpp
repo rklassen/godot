@@ -55,7 +55,7 @@ void Camera::_update_camera_mode() {
 			set_frustum(size, frustum_offset, near, far);
 		} break;
 		case PROJECTION_CUSTOM: {
-			set_custom();
+			set_custom(custom_row_x, custom_row_y, custom_row_z, custom_row_w);
 		} break;
 	}
 }
@@ -236,7 +236,7 @@ void Camera::set_custom() {
 	}
 	mode = PROJECTION_CUSTOM;
 	force_change = false;
-	VisualServer::get_singleton()->camera_set_custom(camera);
+	VisualServer::get_singleton()->camera_set_custom(camera, custom_row_x, custom_row_y, custom_row_z, custom_row_w);
 	update_gizmo();
 }
 

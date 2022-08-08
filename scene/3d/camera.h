@@ -59,6 +59,12 @@ public:
 		DOPPLER_TRACKING_PHYSICS_STEP
 	};
 
+	// Lowlande
+	Vector3 custom_row_x;
+	Vector3 custom_row_y;
+	Vector3 custom_row_z;
+	Vector3 custom_row_w;
+
 private:
 	bool force_change;
 	bool current;
@@ -73,11 +79,7 @@ private:
 	float v_offset;
 	float h_offset;
 	KeepAspect keep_aspect;
-	// Lowlande
-	Vector3 custom_row_x;
-	Vector3 custom_row_y;
-	Vector3 custom_row_z;
-	Vector3 custom_row_w;
+
 
 	RID camera;
 	RID scenario_id;

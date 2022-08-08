@@ -2872,10 +2872,7 @@ void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_view
 			ortho = false;
 		} break;
 		case Camera::CUSTOM: {
-			camera_matrix.set_custom(1.0/18.0, 0.1, 0.0, 0.0,
-									 0.0,      0.1, 0.5, 0.0,
-									 0.0,      0.0, 0.0, 1.0,
-				                     0.0,      0.0, 1.0, 0.0);
+			camera_matrix.set_custom(camera->custom_row_x, camera->custom_row_y, camera->custom_row_z, camera->custom_row_w);
 		} break;
 	}
 
