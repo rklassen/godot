@@ -211,6 +211,30 @@ void CameraMatrix::set_frustum(real_t p_size, real_t p_aspect, Vector2 p_offset,
 	set_frustum(-p_size / 2 + p_offset.x, +p_size / 2 + p_offset.x, -p_size / p_aspect / 2 + p_offset.y, +p_size / p_aspect / 2 + p_offset.y, p_near, p_far);
 }
 
+void CameraMatrix::set_custom(real_t m00, real_t m01, real_t m02, real_t m03, real_t m10, real_t m11, real_t m12, real_t m13, real_t m20, real_t m21, real_t m22, real_t m23, real_t m30, real_t m31, real_t m32, real_t m33 ) {
+
+	matrix[0][0] = m00;
+	matrix[0][1] = m01;
+	matrix[0][2] = m02;
+	matrix[0][3] = m03;
+
+	matrix[1][0] = m00;
+	matrix[1][1] = m01;
+	matrix[1][2] = m02;
+	matrix[1][3] = m03;
+
+	matrix[2][0] = m00;
+	matrix[2][1] = m01;
+	matrix[2][2] = m02;
+	matrix[2][3] = m03;
+
+	matrix[3][0] = m00;
+	matrix[3][1] = m01;
+	matrix[3][2] = m02;
+	matrix[3][3] = m03;
+
+}
+
 real_t CameraMatrix::get_z_far() const {
 	const real_t *matrix = (const real_t *)this->matrix;
 	Plane new_plane = Plane(matrix[3] - matrix[2],

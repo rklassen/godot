@@ -2168,6 +2168,7 @@ void RasterizerStorageGLES3::_update_shader(Shader *p_shader) const {
 	}
 
 	ShaderCompilerGLES3::GeneratedCode gen_code;
+	// the update dirty shaders sets this field to the shader uniforms
 	ShaderCompilerGLES3::IdentifierActions *actions = nullptr;
 
 	int async_mode = (int)ShaderGLES3::ASYNC_MODE_VISIBLE;
@@ -2212,6 +2213,7 @@ void RasterizerStorageGLES3::_update_shader(Shader *p_shader) const {
 			shaders.actions_canvas.usage_flag_pointers["EXTRA_MATRIX"] = &p_shader->canvas_item.uses_extra_matrix;
 			shaders.actions_canvas.usage_flag_pointers["PROJECTION_MATRIX"] = &p_shader->canvas_item.uses_projection_matrix;
 			shaders.actions_canvas.usage_flag_pointers["INSTANCE_CUSTOM"] = &p_shader->canvas_item.uses_instance_custom;
+			// Lowlande: no custom matrix here, canvas shader, not spatial
 
 			actions = &shaders.actions_canvas;
 			actions->uniforms = &p_shader->uniforms;
@@ -2281,6 +2283,7 @@ void RasterizerStorageGLES3::_update_shader(Shader *p_shader) const {
 			shaders.actions_scene.write_flag_pointers["MODELVIEW_MATRIX"] = &p_shader->spatial.writes_modelview_or_projection;
 			shaders.actions_scene.write_flag_pointers["PROJECTION_MATRIX"] = &p_shader->spatial.writes_modelview_or_projection;
 			shaders.actions_scene.write_flag_pointers["VERTEX"] = &p_shader->spatial.uses_vertex;
+			// Lowlande: custom matrix doesn't go here because it's associated with the camera, not the shader.
 
 			actions = &shaders.actions_scene;
 			actions->uniforms = &p_shader->uniforms;

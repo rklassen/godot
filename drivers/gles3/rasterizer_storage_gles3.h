@@ -476,6 +476,8 @@ public:
 			bool uses_extra_matrix;
 			bool uses_projection_matrix;
 			bool uses_instance_custom;
+			// Lowlande: not here, canvas shader
+			// bool uses_custom_matrix;
 
 		} canvas_item;
 
@@ -521,6 +523,8 @@ public:
 			bool writes_modelview_or_projection;
 			bool uses_vertex_lighting;
 			bool uses_world_coordinates;
+			// Lowlande: not here, matrix would be set per camera, not per shader.
+			// bool uses_custom_matrix;
 
 		} spatial;
 

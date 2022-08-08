@@ -82,6 +82,12 @@ void VisualServerScene::camera_set_frustum(RID p_camera, float p_size, Vector2 p
 	camera->zfar = p_z_far;
 }
 
+// Lowlande: setter for the camera to store values that will be used on a per-frame basis to calculate matrix values
+void VisualServerScene::camera_set_custom(RID p_camera) {
+	// TODO: establish parameters, implement this 
+}
+
+
 void VisualServerScene::camera_reset_physics_interpolation(RID p_camera) {
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
@@ -2821,6 +2827,7 @@ bool VisualServerScene::_light_instance_update_shadow(Instance *p_instance, cons
 	return animated_material_found;
 }
 
+// Lowlande: Update camera for a given viewport!! set the matrix here
 void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_viewport_size, RID p_shadow_atlas) {
 // render to mono camera
 #ifndef _3D_DISABLED
@@ -2861,6 +2868,12 @@ void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_view
 					camera->zfar,
 					camera->vaspect);
 			ortho = false;
+		} break;
+		case Camera::CUSTOM: {
+			camera_matrix.set_custom(1.0/18.0, 0.1, 0.0, 0.0,
+									 0.0,      0.1, 0.5, 0.0,
+									 0.0,      0.0, 0.0, 1.0,
+				                     0.0,      0.0, 1.0, 0.0);
 		} break;
 	}
 

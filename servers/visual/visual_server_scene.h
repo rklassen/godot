@@ -69,7 +69,8 @@ public:
 		enum Type {
 			PERSPECTIVE,
 			ORTHOGONAL,
-			FRUSTUM
+			FRUSTUM,
+			CUSTOM
 		};
 		Type type;
 		float fov;
@@ -115,6 +116,9 @@ public:
 	virtual void camera_set_perspective(RID p_camera, float p_fovy_degrees, float p_z_near, float p_z_far);
 	virtual void camera_set_orthogonal(RID p_camera, float p_size, float p_z_near, float p_z_far);
 	virtual void camera_set_frustum(RID p_camera, float p_size, Vector2 p_offset, float p_z_near, float p_z_far);
+	// Lowlande: need to figure out which parameters we are looking at hurrrr
+	// TODO: update this here and in .cpp
+	virtual void camera_set_custom(RID p_camera); // if we're exposing the camera matrix to user edit we should set a reference to the class or script setting the matrix on a per-frame basis
 	virtual void camera_set_transform(RID p_camera, const Transform &p_transform);
 	virtual void camera_set_interpolated(RID p_camera, bool p_interpolated);
 	virtual void camera_reset_physics_interpolation(RID p_camera);

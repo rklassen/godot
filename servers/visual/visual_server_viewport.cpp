@@ -64,6 +64,7 @@ static Transform2D _canvas_get_transform(VisualServerViewport::Viewport *p_viewp
 	return xf;
 }
 
+// Lowlande: can smell the cheese
 void VisualServerViewport::_draw_3d(Viewport *p_viewport, ARVRInterface::Eyes p_eye) {
 	Ref<ARVRInterface> arvr_interface;
 	if (ARVRServer::get_singleton() != nullptr) {
@@ -73,10 +74,12 @@ void VisualServerViewport::_draw_3d(Viewport *p_viewport, ARVRInterface::Eyes p_
 	if (p_viewport->use_arvr && arvr_interface.is_valid()) {
 		VSG::scene->render_camera(arvr_interface, p_eye, p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
 	} else {
+		// Lowlande: BINGO!!!
 		VSG::scene->render_camera(p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
 	}
 }
 
+// Lowlande: called for each viewport in VisualServerViewport::draw_viewports() {
 void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::Eyes p_eye) {
 	/* Camera should always be BEFORE any other 3D */
 
@@ -103,6 +106,7 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 	}
 
 	if (!scenario_draw_canvas_bg && can_draw_3d) {
+		// Lowlande: looks like this is where the viewport renders
 		_draw_3d(p_viewport, p_eye);
 	}
 
@@ -245,6 +249,7 @@ void VisualServerViewport::_draw_viewport(Viewport *p_viewport, ARVRInterface::E
 			if (!can_draw_3d) {
 				VSG::scene->render_empty_scene(p_viewport->scenario, p_viewport->shadow_atlas);
 			} else {
+				// Lowlande: though might be this call. idk... this code runs with updates to shadow maps
 				_draw_3d(p_viewport, p_eye);
 			}
 		}
@@ -271,6 +276,8 @@ void VisualServerViewport::draw_viewports() {
 	//sort viewports
 	active_viewports.sort_custom<ViewportSort>();
 
+	// Lowlande: setting the camera matrix should happen in this loop
+	
 	//draw viewports
 	for (int i = 0; i < active_viewports.size(); i++) {
 		Viewport *vp = active_viewports[i];
@@ -292,8 +299,15 @@ void VisualServerViewport::draw_viewports() {
 			}
 		}
 
-		bool visible = vp->viewport_to_screen_rect != Rect2() || vp->update_mode == VS::VIEWPORT_UPDATE_ALWAYS || vp->update_mode == VS::VIEWPORT_UPDATE_ONCE || (vp->update_mode == VS::VIEWPORT_UPDATE_WHEN_VISIBLE && VSG::storage->render_target_was_used(vp->render_target));
+		// Lowlande: viewport now has a reference to render target size 
+
+		bool visible = vp->viewport_to_screen_rect != Rect2()
+			        || vp->update_mode == VS::VIEWPORT_UPDATE_ALWAYS
+			        || vp->update_mode == VS::VIEWPORT_UPDATE_ONCE
+			        || (vp->update_mode == VS::VIEWPORT_UPDATE_WHEN_VISIBLE && VSG::storage->render_target_was_used(vp->render_target));
 		visible = visible && vp->size.x > 1 && vp->size.y > 1;
+
+		// Lowlande: skip rendering if it's not used, if the target it invalid, or if it's set to update on demand
 
 		if (!visible) {
 			continue;
@@ -331,13 +345,16 @@ void VisualServerViewport::draw_viewports() {
 
 			// and for our frame timing, mark when we've finished committing our eyes
 			ARVRServer::get_singleton()->_mark_commit();
-		} else {
+		}
+		else // Lowlande: viewport is not using arvr, or the arvr interface is invalid
+		{
 			VSG::storage->render_target_set_external_texture(vp->render_target, 0, 0);
 			VSG::rasterizer->set_current_render_target(vp->render_target);
 
 			VSG::scene_render->set_debug_draw_mode(vp->debug_draw);
 			VSG::storage->render_info_begin_capture();
 
+			// Lowlande: getting closer to transferring camera matrix
 			// render standard mono camera
 			_draw_viewport(vp);
 
