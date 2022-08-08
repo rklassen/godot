@@ -73,7 +73,11 @@ private:
 	float v_offset;
 	float h_offset;
 	KeepAspect keep_aspect;
-	float m00, m01, m11, m12;
+	// Lowlande
+	Color custom_row_x;
+	Color custom_row_y;
+	Color custom_row_z;
+	Color custom_row_w;
 
 	RID camera;
 	RID scenario_id;
@@ -114,7 +118,16 @@ public:
 	void set_orthogonal(float p_size, float p_z_near, float p_z_far);
 	void set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p_z_far);
 	// Lowlande
-	void set_custom(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33);
+	//void set_custom(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33);
+	void set_custom();
+	void set_custom_row_x(Color p_row);
+	void set_custom_row_y(Color p_row);
+	void set_custom_row_z(Color p_row);
+	void set_custom_row_w(Color p_row);
+	Color get_custom_row_x() const;
+	Color get_custom_row_y() const;
+	Color get_custom_row_w() const;
+	Color get_custom_row_z() const;
 	void set_projection(Camera::Projection p_mode);
 	
 
