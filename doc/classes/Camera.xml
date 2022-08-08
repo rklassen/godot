@@ -121,6 +121,12 @@
 				Sets the camera projection to perspective mode (see [constant PROJECTION_PERSPECTIVE]), by specifying a [code]fov[/code] (field of view) angle in degrees, and the [code]z_near[/code] and [code]z_far[/code] clip planes in world space units.
 			</description>
 		</method>
+		<method name="set_custom">
+			<return type="void" />
+			<description>
+				Allows setting each component of the camera matrix directly.
+			</description>
+		</method>
 		<method name="unproject_position" qualifiers="const">
 			<return type="Vector2" />
 			<argument index="0" name="world_point" type="Vector3" />
@@ -194,6 +200,9 @@
 		</constant>
 		<constant name="PROJECTION_FRUSTUM" value="2" enum="Projection">
 			Frustum projection. This mode allows adjusting [member frustum_offset] to create "tilted frustum" effects.
+		</constant>
+		<constant name="PROJECTION_CUSTOM" value="3" enum="Projection">
+			Custom projection. This mode allows adjusting raw camera matrix values for custom effects.
 		</constant>
 		<constant name="KEEP_WIDTH" value="0" enum="KeepAspect">
 			Preserves the horizontal aspect ratio; also known as Vert- scaling. This is usually the best option for projects running in portrait mode, as taller aspect ratios will benefit from a wider vertical FOV.
