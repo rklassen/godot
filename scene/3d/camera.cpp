@@ -55,7 +55,10 @@ void Camera::_update_camera_mode() {
 			set_frustum(size, frustum_offset, near, far);
 		} break;
 		case PROJECTION_CUSTOM: {
-			set_custom(custom_row_x, custom_row_y, custom_row_z, custom_row_w);
+			set_custom(custom_m00, custom_m01, custom_m02, custom_m03,
+					   custom_m10, custom_m11, custom_m12, custom_m13,
+					   custom_m20, custom_m21, custom_m22, custom_m23,
+					   custom_m30, custom_m31, custom_m32, custom_m33);
 		} break;
 	}
 }
@@ -73,23 +76,11 @@ void Camera::_validate_property(PropertyInfo &p_property) const {
 		if (mode != PROJECTION_FRUSTUM) {
 			p_property.usage = PROPERTY_USAGE_NOEDITOR;
 		}
-	} else if (p_property.name == "custom_row_x") {
+	} else if (p_property.name.length() > 8 && p_property.name.substr(0, 8) == "custom_m") {
 		if (mode != PROJECTION_CUSTOM) {
 			p_property.usage = PROPERTY_USAGE_NOEDITOR;
 		}
-	} else if (p_property.name == "custom_row_y") {
-		if (mode != PROJECTION_CUSTOM) {
-			p_property.usage = PROPERTY_USAGE_NOEDITOR;
-		}
-	} else if (p_property.name == "custom_row_z") {
-		if (mode != PROJECTION_CUSTOM) {
-			p_property.usage = PROPERTY_USAGE_NOEDITOR;
-		}
-	} else if (p_property.name == "custom_row_w") {
-		if (mode != PROJECTION_CUSTOM) {
-			p_property.usage = PROPERTY_USAGE_NOEDITOR;
-		}
-	} 
+	}
 }
 
 void Camera::_update_camera() {
@@ -229,26 +220,87 @@ void Camera::set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p
 	update_gizmo();
 }
 
-// Lowlande
-void Camera::set_custom() {
+// Lowlande: overloaded function
+void Camera::set_custom(VisualServer::camera_mat4x4 mat4x4) {
+
 	if (!force_change && mode == PROJECTION_CUSTOM) {
 		return;
 	}
 	mode = PROJECTION_CUSTOM;
 	force_change = false;
-	VisualServer::get_singleton()->camera_set_custom(camera, custom_row_x, custom_row_y, custom_row_z, custom_row_w);
+
+	VisualServer::get_singleton()->camera_set_custom(camera, mat4x4);
 	update_gizmo();
+
 }
 
-void Camera::set_custom_row_x(Vector3 p_row) { custom_row_x = p_row; }
-void Camera::set_custom_row_y(Vector3 p_row) { custom_row_y = p_row; }
-void Camera::set_custom_row_z(Vector3 p_row) { custom_row_z = p_row; }
-void Camera::set_custom_row_w(Vector3 p_row) { custom_row_w = p_row; }
+// Lowlande: brute force function. not sure from where this is called or whether we want a mat4x4 or series of floats
+void Camera::set_custom(float custom_m00, float custom_m01, float custom_m02, float custom_m03,
+						float custom_m10, float custom_m11, float custom_m12, float custom_m13,
+						float custom_m20, float custom_m21, float custom_m22, float custom_m23,
+						float custom_m30, float custom_m31, float custom_m32, float custom_m33) {
 
-Vector3 Camera::get_custom_row_x() const { return custom_row_x; }
-Vector3 Camera::get_custom_row_y() const { return custom_row_y; }
-Vector3 Camera::get_custom_row_z() const { return custom_row_z; }
-Vector3 Camera::get_custom_row_w() const { return custom_row_w; }
+	if (!force_change && mode == PROJECTION_CUSTOM) {
+		return;
+	}
+	mode = PROJECTION_CUSTOM;
+	force_change = false;
+
+	VisualServer::camera_mat4x4 m = VisualServer::camera_mat4x4();
+	m.m00 = custom_m00;
+	m.m01 = custom_m01;
+	m.m02 = custom_m02;
+	m.m03 = custom_m03;
+	m.m10 = custom_m10;
+	m.m11 = custom_m11;
+	m.m12 = custom_m12;
+	m.m13 = custom_m13;
+	m.m20 = custom_m20;
+	m.m21 = custom_m21;
+	m.m22 = custom_m22;
+	m.m23 = custom_m23;
+	m.m30 = custom_m30;
+	m.m31 = custom_m31;
+	m.m32 = custom_m32;
+	m.m33 = custom_m33;
+
+	VisualServer::get_singleton()->camera_set_custom(camera, m);
+	update_gizmo();
+
+}
+
+void Camera::set_custom_m00(float p_m00) { custom_m00 = p_m00; }
+void Camera::set_custom_m01(float p_m01) { custom_m01 = p_m01; }
+void Camera::set_custom_m02(float p_m02) { custom_m02 = p_m02; }
+void Camera::set_custom_m03(float p_m03) { custom_m03 = p_m03; }
+void Camera::set_custom_m10(float p_m10) { custom_m10 = p_m10; }
+void Camera::set_custom_m11(float p_m11) { custom_m11 = p_m11; }
+void Camera::set_custom_m12(float p_m12) { custom_m12 = p_m12; }
+void Camera::set_custom_m13(float p_m13) { custom_m13 = p_m13; }
+void Camera::set_custom_m20(float p_m20) { custom_m20 = p_m20; }
+void Camera::set_custom_m21(float p_m21) { custom_m21 = p_m21; }
+void Camera::set_custom_m22(float p_m22) { custom_m22 = p_m22; }
+void Camera::set_custom_m23(float p_m23) { custom_m23 = p_m23; }
+void Camera::set_custom_m30(float p_m30) { custom_m30 = p_m30; }
+void Camera::set_custom_m31(float p_m31) { custom_m31 = p_m31; }
+void Camera::set_custom_m32(float p_m32) { custom_m32 = p_m32; }
+void Camera::set_custom_m33(float p_m33) { custom_m33 = p_m33; }
+float Camera::get_custom_m00() const { return custom_m00; }
+float Camera::get_custom_m01() const { return custom_m01; }
+float Camera::get_custom_m02() const { return custom_m02; }
+float Camera::get_custom_m03() const { return custom_m03; }
+float Camera::get_custom_m10() const { return custom_m10; }
+float Camera::get_custom_m11() const { return custom_m11; }
+float Camera::get_custom_m12() const { return custom_m12; }
+float Camera::get_custom_m13() const { return custom_m13; }
+float Camera::get_custom_m20() const { return custom_m20; }
+float Camera::get_custom_m21() const { return custom_m21; }
+float Camera::get_custom_m22() const { return custom_m22; }
+float Camera::get_custom_m23() const { return custom_m23; }
+float Camera::get_custom_m30() const { return custom_m30; }
+float Camera::get_custom_m31() const { return custom_m31; }
+float Camera::get_custom_m32() const { return custom_m32; }
+float Camera::get_custom_m33() const { return custom_m33; }
 
 
 void Camera::set_projection(Camera::Projection p_mode) {
@@ -505,6 +557,7 @@ Camera::DopplerTracking Camera::get_doppler_tracking() const {
 }
 
 void Camera::_bind_methods() {
+	// Lowlande: BIND METHODS
 	ClassDB::bind_method(D_METHOD("project_ray_normal", "screen_point"), &Camera::project_ray_normal);
 	ClassDB::bind_method(D_METHOD("project_local_ray_normal", "screen_point"), &Camera::project_local_ray_normal);
 	ClassDB::bind_method(D_METHOD("project_ray_origin", "screen_point"), &Camera::project_ray_origin);
@@ -515,14 +568,42 @@ void Camera::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_orthogonal", "size", "z_near", "z_far"), &Camera::set_orthogonal);
 	ClassDB::bind_method(D_METHOD("set_frustum", "size", "offset", "z_near", "z_far"), &Camera::set_frustum);
 
-	ClassDB::bind_method(D_METHOD("set_custom_row_x", "custom_row_x"), &Camera::set_custom_row_x);
-	ClassDB::bind_method(D_METHOD("set_custom_row_y", "custom_row_y"), &Camera::set_custom_row_y);
-	ClassDB::bind_method(D_METHOD("set_custom_row_z", "custom_row_z"), &Camera::set_custom_row_z);
-	ClassDB::bind_method(D_METHOD("set_custom_row_w", "custom_row_w"), &Camera::set_custom_row_w);
-	ClassDB::bind_method(D_METHOD("get_custom_row_x"), &Camera::get_custom_row_x);
-	ClassDB::bind_method(D_METHOD("get_custom_row_y"), &Camera::get_custom_row_y);
-	ClassDB::bind_method(D_METHOD("get_custom_row_z"), &Camera::get_custom_row_z);
-	ClassDB::bind_method(D_METHOD("get_custom_row_w"), &Camera::get_custom_row_w);
+	// nasty, brutish and... verbose
+	ClassDB::bind_method(D_METHOD("set_custom_m00", "custom_m00"), &Camera::set_custom_m00);
+	ClassDB::bind_method(D_METHOD("set_custom_m01", "custom_m01"), &Camera::set_custom_m01);
+	ClassDB::bind_method(D_METHOD("set_custom_m02", "custom_m02"), &Camera::set_custom_m02);
+	ClassDB::bind_method(D_METHOD("set_custom_m03", "custom_m03"), &Camera::set_custom_m03);
+	ClassDB::bind_method(D_METHOD("set_custom_m10", "custom_m10"), &Camera::set_custom_m10);
+	ClassDB::bind_method(D_METHOD("set_custom_m11", "custom_m11"), &Camera::set_custom_m11);
+	ClassDB::bind_method(D_METHOD("set_custom_m12", "custom_m12"), &Camera::set_custom_m12);
+	ClassDB::bind_method(D_METHOD("set_custom_m13", "custom_m13"), &Camera::set_custom_m13);
+	ClassDB::bind_method(D_METHOD("set_custom_m20", "custom_m20"), &Camera::set_custom_m20);
+	ClassDB::bind_method(D_METHOD("set_custom_m21", "custom_m21"), &Camera::set_custom_m21);
+	ClassDB::bind_method(D_METHOD("set_custom_m22", "custom_m22"), &Camera::set_custom_m22);
+	ClassDB::bind_method(D_METHOD("set_custom_m23", "custom_m23"), &Camera::set_custom_m23);
+	ClassDB::bind_method(D_METHOD("set_custom_m30", "custom_m30"), &Camera::set_custom_m30);
+	ClassDB::bind_method(D_METHOD("set_custom_m31", "custom_m31"), &Camera::set_custom_m31);
+	ClassDB::bind_method(D_METHOD("set_custom_m32", "custom_m32"), &Camera::set_custom_m32);
+	ClassDB::bind_method(D_METHOD("set_custom_m33", "custom_m33"), &Camera::set_custom_m33);
+
+
+	ClassDB::bind_method(D_METHOD("get_custom_m00"), &Camera::get_custom_m00);
+	ClassDB::bind_method(D_METHOD("get_custom_m01"), &Camera::get_custom_m01);
+	ClassDB::bind_method(D_METHOD("get_custom_m02"), &Camera::get_custom_m02);
+	ClassDB::bind_method(D_METHOD("get_custom_m03"), &Camera::get_custom_m03);
+	ClassDB::bind_method(D_METHOD("get_custom_m10"), &Camera::get_custom_m10);
+	ClassDB::bind_method(D_METHOD("get_custom_m11"), &Camera::get_custom_m11);
+	ClassDB::bind_method(D_METHOD("get_custom_m12"), &Camera::get_custom_m12);
+	ClassDB::bind_method(D_METHOD("get_custom_m13"), &Camera::get_custom_m13);
+	ClassDB::bind_method(D_METHOD("get_custom_m20"), &Camera::get_custom_m20);
+	ClassDB::bind_method(D_METHOD("get_custom_m21"), &Camera::get_custom_m21);
+	ClassDB::bind_method(D_METHOD("get_custom_m22"), &Camera::get_custom_m22);
+	ClassDB::bind_method(D_METHOD("get_custom_m23"), &Camera::get_custom_m23);
+	ClassDB::bind_method(D_METHOD("get_custom_m30"), &Camera::get_custom_m30);
+	ClassDB::bind_method(D_METHOD("get_custom_m31"), &Camera::get_custom_m31);
+	ClassDB::bind_method(D_METHOD("get_custom_m32"), &Camera::get_custom_m32);
+	ClassDB::bind_method(D_METHOD("get_custom_m33"), &Camera::get_custom_m33);
+
 
 	ClassDB::bind_method(D_METHOD("make_current"), &Camera::make_current);
 	ClassDB::bind_method(D_METHOD("clear_current", "enable_next"), &Camera::clear_current, DEFVAL(true));
@@ -569,10 +650,22 @@ void Camera::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doppler_tracking", PROPERTY_HINT_ENUM, "Disabled,Idle,Physics"), "set_doppler_tracking", "get_doppler_tracking");
 	// Lowlande
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "projection", PROPERTY_HINT_ENUM, "Perspective,Orthogonal,Frustum,Custom"), "set_projection", "get_projection");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_x"), "set_custom_row_x", "get_custom_row_x");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_y"), "set_custom_row_y", "get_custom_row_y");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_z"), "set_custom_row_z", "get_custom_row_z");
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "custom_row_w"), "set_custom_row_w", "get_custom_row_w");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m00"), "set_custom_m00", "get_custom_m00");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m01"), "set_custom_m01", "get_custom_m01");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m02"), "set_custom_m02", "get_custom_m02");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m03"), "set_custom_m03", "get_custom_m03");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m10"), "set_custom_m10", "get_custom_m10");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m11"), "set_custom_m11", "get_custom_m11");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m12"), "set_custom_m12", "get_custom_m12");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m13"), "set_custom_m13", "get_custom_m13");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m20"), "set_custom_m20", "get_custom_m20");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m21"), "set_custom_m21", "get_custom_m21");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m22"), "set_custom_m22", "get_custom_m22");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m23"), "set_custom_m23", "get_custom_m23");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m30"), "set_custom_m30", "get_custom_m30");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m31"), "set_custom_m31", "get_custom_m31");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m32"), "set_custom_m32", "get_custom_m32");
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "custom_m33"), "set_custom_m33", "get_custom_m33");
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "current"), "set_current", "is_current");
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "fov", PROPERTY_HINT_RANGE, "1,179,0.1"), "set_fov", "get_fov");
@@ -719,6 +812,25 @@ Camera::Camera() {
 	current = false;
 	viewport = nullptr;
 	force_change = false;
+
+	// Lowlande: initialize matrix-as-floats to identity vector
+	custom_m00 = 1.0;
+	custom_m01 = 0.0;
+	custom_m02 = 0.0;
+	custom_m03 = 0.0;
+	custom_m10 = 0.0;
+	custom_m11 = 1.0;
+	custom_m12 = 0.0;
+	custom_m13 = 0.0;
+	custom_m20 = 0.0;
+	custom_m21 = 0.0;
+	custom_m22 = 1.0;
+	custom_m23 = 0.0;
+	custom_m30 = 0.0;
+	custom_m31 = 0.0;
+	custom_m32 = 0.0;
+	custom_m33 = 1.0;
+
 	mode = PROJECTION_PERSPECTIVE;
 	set_perspective(70.0, 0.05, 100.0);
 	keep_aspect = KEEP_HEIGHT;

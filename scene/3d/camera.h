@@ -59,11 +59,6 @@ public:
 		DOPPLER_TRACKING_PHYSICS_STEP
 	};
 
-	// Lowlande
-	Vector3 custom_row_x;
-	Vector3 custom_row_y;
-	Vector3 custom_row_z;
-	Vector3 custom_row_w;
 
 private:
 	bool force_change;
@@ -79,7 +74,22 @@ private:
 	float v_offset;
 	float h_offset;
 	KeepAspect keep_aspect;
-
+	float custom_m00;
+	float custom_m01;
+	float custom_m02;
+	float custom_m03;
+	float custom_m10;
+	float custom_m11;
+	float custom_m12;
+	float custom_m13;
+	float custom_m20;
+	float custom_m21;
+	float custom_m22;
+	float custom_m23;
+	float custom_m30;
+	float custom_m31;
+	float custom_m32;
+	float custom_m33;
 
 	RID camera;
 	RID scenario_id;
@@ -120,16 +130,45 @@ public:
 	void set_orthogonal(float p_size, float p_z_near, float p_z_far);
 	void set_frustum(float p_size, Vector2 p_offset, float p_z_near, float p_z_far);
 	// Lowlande
-	//void set_custom(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33);
-	void set_custom();
-	void set_custom_row_x(Vector3 p_row);
-	void set_custom_row_y(Vector3 p_row);
-	void set_custom_row_z(Vector3 p_row);
-	void set_custom_row_w(Vector3 p_row);
-	Vector3 get_custom_row_x() const;
-	Vector3 get_custom_row_y() const;
-	Vector3 get_custom_row_w() const;
-	Vector3 get_custom_row_z() const;
+	void set_custom(VisualServer::camera_mat4x4 mat4x4);
+	void set_custom(float custom_m00, float custom_m01, float custom_m02, float custom_m03,
+			        float custom_m10, float custom_m11, float custom_m12, float custom_m13,
+			        float custom_m20, float custom_m21, float custom_m22, float custom_m23,
+			        float custom_m30, float custom_m31, float custom_m32, float custom_m33);
+	// Lowlande: watch out for brute force accessors!!!!! will hopefully change these to setting a custom matrix in whole
+	void set_custom_m00(float p_m00);
+	void set_custom_m01(float p_m01);
+	void set_custom_m02(float p_m02);
+	void set_custom_m03(float p_m03);
+	void set_custom_m10(float p_m10);
+	void set_custom_m11(float p_m11);
+	void set_custom_m12(float p_m12);
+	void set_custom_m13(float p_m13);
+	void set_custom_m20(float p_m20);
+	void set_custom_m21(float p_m21);
+	void set_custom_m22(float p_m22);
+	void set_custom_m23(float p_m23);
+	void set_custom_m30(float p_m30);
+	void set_custom_m31(float p_m31);
+	void set_custom_m32(float p_m32);
+	void set_custom_m33(float p_m33);
+	float get_custom_m00() const;
+	float get_custom_m01() const;
+	float get_custom_m02() const;
+	float get_custom_m03() const;
+	float get_custom_m10() const;
+	float get_custom_m11() const;
+	float get_custom_m12() const;
+	float get_custom_m13() const;
+	float get_custom_m20() const;
+	float get_custom_m21() const;
+	float get_custom_m22() const;
+	float get_custom_m23() const;
+	float get_custom_m30() const;
+	float get_custom_m31() const;
+	float get_custom_m32() const;
+	float get_custom_m33() const;
+
 	void set_projection(Camera::Projection p_mode);
 	
 

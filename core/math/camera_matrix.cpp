@@ -211,28 +211,58 @@ void CameraMatrix::set_frustum(real_t p_size, real_t p_aspect, Vector2 p_offset,
 	set_frustum(-p_size / 2 + p_offset.x, +p_size / 2 + p_offset.x, -p_size / p_aspect / 2 + p_offset.y, +p_size / p_aspect / 2 + p_offset.y, p_near, p_far);
 }
 
-// Lowlande
-void CameraMatrix::set_custom(Vector3 row_x, Vector3 row_y, Vector3 row_z, Vector3 row_w) {
+void CameraMatrix::set_custom(VisualServer::camera_mat4x4 mat4x4)
+{
 
-	matrix[0][0] = row_x.x;
-	matrix[0][1] = row_x.y;
-	matrix[0][2] = row_x.z;
-	matrix[0][3] = 0.0;
+	matrix[0][0] = mat4x4.m00;
+	matrix[0][1] = mat4x4.m01;
+	matrix[0][2] = mat4x4.m02;
+	matrix[0][3] = mat4x4.m03;
 
-	matrix[1][0] = row_y.x;
-	matrix[1][1] = row_y.y;
-	matrix[1][2] = row_y.z;
-	matrix[1][3] = 0.0;
+	matrix[1][0] = mat4x4.m10;
+	matrix[1][1] = mat4x4.m11;
+	matrix[1][2] = mat4x4.m12;
+	matrix[1][3] = mat4x4.m13;
 
-	matrix[2][0] = row_z.x;
-	matrix[2][1] = row_z.y;
-	matrix[2][2] = row_z.z;
-	matrix[2][3] = 0.0;
+	matrix[2][0] = mat4x4.m20;
+	matrix[2][1] = mat4x4.m21;
+	matrix[2][2] = mat4x4.m22;
+	matrix[2][3] = mat4x4.m23;
 
-	matrix[3][0] = row_w.x;
-	matrix[3][1] = row_w.y;
-	matrix[3][2] = row_w.z;
-	matrix[3][3] = 1.0;
+	matrix[3][0] = mat4x4.m30;
+	matrix[3][1] = mat4x4.m31;
+	matrix[3][2] = mat4x4.m32;
+	matrix[3][3] = mat4x4.m33;
+
+}
+
+
+
+// Lowlande CameraMatrix::set_custom by floats
+void CameraMatrix::set_custom(real_t m00, real_t m01, real_t m02, real_t m03,
+							  real_t m10, real_t m11, real_t m12, real_t m13,
+							  real_t m20, real_t m21, real_t m22, real_t m23,
+							  real_t m30, real_t m31, real_t m32, real_t m33) {
+
+	matrix[0][0] = m00;
+	matrix[0][1] = m01;
+	matrix[0][2] = m02;
+	matrix[0][3] = m03;
+
+	matrix[1][0] = m10;
+	matrix[1][1] = m11;
+	matrix[1][2] = m12;
+	matrix[1][3] = m13;
+
+	matrix[2][0] = m20;
+	matrix[2][1] = m21;
+	matrix[2][2] = m22;
+	matrix[2][3] = m23;
+
+	matrix[3][0] = m30;
+	matrix[3][1] = m31;
+	matrix[3][2] = m32;
+	matrix[3][3] = m33;
 
 }
 

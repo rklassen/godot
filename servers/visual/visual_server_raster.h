@@ -464,7 +464,7 @@ public:
 	BIND4(camera_set_orthogonal, RID, float, float, float)
 	BIND5(camera_set_frustum, RID, float, Vector2, float, float)
 	// Lowlande bind custom
-	BIND1(camera_set_custom, RID)
+	BIND2(camera_set_custom, RID, VisualServer::camera_mat4x4)
 	BIND2(camera_set_transform, RID, const Transform &)
 	BIND2(camera_set_interpolated, RID, bool)
 	BIND1(camera_reset_physics_interpolation, RID)

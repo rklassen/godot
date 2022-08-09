@@ -64,14 +64,16 @@ static Transform2D _canvas_get_transform(VisualServerViewport::Viewport *p_viewp
 	return xf;
 }
 
-// Lowlande: can smell the cheese
+
 void VisualServerViewport::_draw_3d(Viewport *p_viewport, ARVRInterface::Eyes p_eye) {
+	// Lowlande: _draw_3d can smell the cheese
 	Ref<ARVRInterface> arvr_interface;
 	if (ARVRServer::get_singleton() != nullptr) {
 		arvr_interface = ARVRServer::get_singleton()->get_primary_interface();
 	}
 
 	if (p_viewport->use_arvr && arvr_interface.is_valid()) {
+		// not this one... render for AR
 		VSG::scene->render_camera(arvr_interface, p_eye, p_viewport->camera, p_viewport->scenario, p_viewport->size, p_viewport->shadow_atlas);
 	} else {
 		// Lowlande: BINGO!!!
