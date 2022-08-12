@@ -621,33 +621,10 @@ public:
 	virtual RID camera_create() = 0;
 	virtual void camera_set_perspective(RID p_camera, float p_fovy_degrees, float p_z_near, float p_z_far) = 0;
 	virtual void camera_set_orthogonal(RID p_camera, float p_size, float p_z_near, float p_z_far) = 0;
-	virtual void camera_set_frustum(RID p_camera, float p_size, Vector2 p_offset, float p_z_near, float p_z_far) = 0;
+	virtual void camera_set_frustum(RID p_camera, float p_size, Vector2 p_offset, float p_z_near, float p_z_far) = 0;	
+	// Lowlande: camera_set_custom
+	virtual void camera_set_custom(RID p_camera, Vector3 row_x, Vector3 row_y, Vector3 row_z, Vector3 row_w, Vector3 col_w) = 0;
 
-	/////////
-
-	// Lowlande: more brute force shhhh, avert one's eyes 
-	// TODO: Make this not bad
-	struct camera_mat4x4 {
-		float m00;
-		float m01;
-		float m02;
-		float m03;
-		float m10;
-		float m11;
-		float m12;
-		float m13;
-		float m20;
-		float m21;
-		float m22;
-		float m23;
-		float m30;
-		float m31;
-		float m32;
-		float m33;
-	};
-
-	// Lowlande: trying to set custom matrix via value by struct, rather than class by reference
-	virtual void camera_set_custom(RID p_camera, camera_mat4x4 p_mat4x4) = 0;
 	virtual void camera_set_transform(RID p_camera, const Transform &p_transform) = 0;
 	virtual void camera_set_interpolated(RID p_camera, bool p_interpolated) = 0;
 	virtual void camera_reset_physics_interpolation(RID p_camera) = 0;

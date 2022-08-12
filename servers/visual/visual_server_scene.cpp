@@ -83,29 +83,20 @@ void VisualServerScene::camera_set_frustum(RID p_camera, float p_size, Vector2 p
 }
 
 
+// Lowlande: VisualServerScene::camera_set_custom
 // Lowlande: setter for the camera to store values that will be used on a per-frame basis to calculate matrix values
-// TODO: determine whether p_camera is a Camera.cpp 
-void VisualServerScene::camera_set_custom(RID p_camera, VisualServer::camera_mat4x4 p_mat4x4) {
+void VisualServerScene::camera_set_custom(RID p_camera, Vector3 row_x, Vector3 row_y, Vector3 row_z,
+														Vector3 row_w, Vector3 col_w) {
 
 	Camera *camera = camera_owner.get(p_camera);
 	ERR_FAIL_COND(!camera);
 	camera->type = Camera::CUSTOM;
-	camera->custom_m00 = p_mat4x4.m00;
-	camera->custom_m01 = p_mat4x4.m01;
-	camera->custom_m02 = p_mat4x4.m02;
-	camera->custom_m03 = p_mat4x4.m03;
-	camera->custom_m10 = p_mat4x4.m10;
-	camera->custom_m11 = p_mat4x4.m11;
-	camera->custom_m12 = p_mat4x4.m12;
-	camera->custom_m13 = p_mat4x4.m13;
-	camera->custom_m20 = p_mat4x4.m20;
-	camera->custom_m21 = p_mat4x4.m21;
-	camera->custom_m22 = p_mat4x4.m22;
-	camera->custom_m23 = p_mat4x4.m23;
-	camera->custom_m30 = p_mat4x4.m30;
-	camera->custom_m31 = p_mat4x4.m31;
-	camera->custom_m32 = p_mat4x4.m32;
-	camera->custom_m33 = p_mat4x4.m33;
+	camera->custom_row_x = row_x;
+	camera->custom_row_y = row_y;
+	camera->custom_row_z = row_z;
+	camera->custom_row_w = row_w;
+	camera->custom_col_w = col_w;
+
 }
 
 
@@ -2893,22 +2884,11 @@ void VisualServerScene::render_camera(RID p_camera, RID p_scenario, Size2 p_view
 		// Lowlande: new case
 		case Camera::CUSTOM: {
 			camera_matrix.set_custom(
-					camera->custom_m00,
-					camera->custom_m01,
-					camera->custom_m02,
-					camera->custom_m03,
-					camera->custom_m10,
-					camera->custom_m11,
-					camera->custom_m12,
-					camera->custom_m13,
-					camera->custom_m20,
-					camera->custom_m21,
-					camera->custom_m22,
-					camera->custom_m23,
-					camera->custom_m30,
-					camera->custom_m31,
-					camera->custom_m32,
-					camera->custom_m33);
+					camera->custom_row_x,
+					camera->custom_row_y,
+					camera->custom_row_z,
+					camera->custom_row_w,
+					camera->custom_col_w);
 		} break;
 	}
 

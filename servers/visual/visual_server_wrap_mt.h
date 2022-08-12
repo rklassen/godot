@@ -375,8 +375,9 @@ public:
 	FUNC4(camera_set_perspective, RID, float, float, float)
 	FUNC4(camera_set_orthogonal, RID, float, float, float)
 	FUNC5(camera_set_frustum, RID, float, Vector2, float, float)
-	// Lowlande -> Bind camera function. FUNC2 RID VisualServer::camera_mat4x4
-	FUNC2(camera_set_custom, RID, VisualServer::camera_mat4x4)
+	// Lowlande -> Bind camera function. FUNC4(camera_set_custom, ...)
+	FUNC6(camera_set_custom, RID, Vector3, Vector3, Vector3, Vector3, Vector3)
+
 	FUNC2(camera_set_transform, RID, const Transform &)
 	FUNC2(camera_set_interpolated, RID, bool)
 	FUNC1(camera_reset_physics_interpolation, RID)

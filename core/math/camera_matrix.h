@@ -60,11 +60,7 @@ struct CameraMatrix {
 	void set_frustum(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_near, real_t p_far);
 	void set_frustum(real_t p_size, real_t p_aspect, Vector2 p_offset, real_t p_near, real_t p_far, bool p_flip_fov = false);
 	// Lowlande set parameters for custom matrix. 
-	void set_custom(VisualServer::camera_mat4x4 mat4x4);
-	void set_custom(real_t m00, real_t m01, real_t m02, real_t m03,
-				    real_t m10, real_t m11, real_t m12, real_t m13,
-					real_t m20, real_t m21, real_t m22, real_t m23,
-				    real_t m30, real_t m31, real_t m32, real_t m33);
+	void set_custom(Vector3 row_x, Vector3 row_y, Vector3 row_z, Vector3 row_w, Vector3 col_w);
 	 
 	static real_t get_fovy(real_t p_fovx, real_t p_aspect) {
 		return Math::rad2deg(Math::atan(p_aspect * Math::tan(Math::deg2rad(p_fovx) * 0.5)) * 2.0);
